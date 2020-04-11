@@ -32,6 +32,9 @@
 
 	<modules>
 		<module>young-commons</module>
+		<module>young-i18n</module>
+		<module>young-logging-starter</module>
+		<module>young-upgrade</module>
 		
 	</modules>
 

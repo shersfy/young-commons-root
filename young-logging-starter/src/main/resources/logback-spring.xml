@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+    <springProperty scope="context" name="APPLICATION" source="spring.application.name" defaultValue="default"/>
+    <springProperty scope="context" name="LOG_HOME"    source="logging.file.path" defaultValue="/young/logs/default"/>
+    <springProperty scope="context" name="HOSTNAME"    source="spring.cloud.client.hostname" defaultValue="localhost"/>
+    <springProperty scope="context" name="LOG_LEVEL_ROOT" source="logging.level.root" defaultValue="info"/>
+    <springProperty scope="context" name="FILTER_TYPE"  source="logging.young.filter.type" defaultValue="Default"/>
+    <springProperty scope="context" name="FILTER_LEVEL" source="logging.young.filter.level" defaultValue="error"/>
+    <!--格式化输出：%d表示日期;%thread表示线程名;%-5level级别从左显示5个字符宽度;%msg日志消息;%n是换行符-->
+	<property name="DEF_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [${HOSTNAME}] [%thread] [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %-5level %logger{50} - %msg%n" />
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${DEF_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="fileout" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${LOG_LEVEL_ROOT}</level>
+        </filter>
+        <encoder>
+            <pattern>${DEF_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/app_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxHistory>10</maxHistory>
+            <maxFileSize>5MB</maxFileSize> 
+            <totalSizeCap>20GB</totalSizeCap> 
+        </rollingPolicy>
+    </appender>
+
+    <appender name="filter" class="org.young.logging.logback.FilterDefaultAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${FILTER_LEVEL}</level>
+        </filter>
+        <filterType>${FILTER_TYPE}</filterType>
+        <applicationName>${APPLICATION}</applicationName>
+    </appender>
+
+    <root level="${LOG_LEVEL_ROOT}">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="fileout"/>
+        <appender-ref ref="filter"/>
+    </root>
+</configuration>
