@@ -11,3 +11,13 @@ mvn deploy:deploy-file -DgroupId=org.young -DartifactId=sqljdbc4 -Dversion=4 -Dp
 mvn deploy:deploy-file -DgroupId=org.young -DartifactId=db2jcc4 -Dversion=10.1 -Dpackaging=jar -Dfile=db2jcc4-10.1.jar -DrepositoryId=release -Durl=http://127.0.0.1:8081/nexus/content/repositories/releases/
 
 ```
+
+3. 安装到本地
+
+```
+mvn install:install-file -DgroupId=org.young -DartifactId=chardet -Dversion=1.0 -Dpackaging=jar -Dfile=chardet-1.0.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=org.young -DartifactId=cpdetector -Dversion=1.0.10 -Dpackaging=jar -Dfile=cpdetector_1.0.10.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=org.young -DartifactId=ojdbc6 -Dversion=6 -Dpackaging=jar -Dfile=ojdbc6.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=org.young -DartifactId=sqljdbc4 -Dversion=4 -Dpackaging=jar -Dfile=sqljdbc4.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=org.young -DartifactId=db2jcc4 -Dversion=10.1 -Dpackaging=jar -Dfile=db2jcc4-10.1.jar -DgeneratePom=true
+```

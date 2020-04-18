@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
@@ -42,6 +43,7 @@ import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -316,8 +318,10 @@ public class HttpUtil {
 				httpResult.setCode(statusCode);
 				HttpEntity entity = httpResponse.getEntity();
 				if (entity != null) {
+					Charset charset = ContentType.get(entity).getCharset();
+					charset = charset==null?Charset.forName("UTF-8"):charset;
 					inputStream = entity.getContent();
-					httpResult.setBody(IOUtils.toString(inputStream));
+					httpResult.setBody(IOUtils.toString(inputStream, charset));
 				}
 			}
 		} catch (Exception e) {
