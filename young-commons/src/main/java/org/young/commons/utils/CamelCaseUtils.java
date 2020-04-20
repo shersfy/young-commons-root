@@ -9,15 +9,16 @@ public final class CamelCaseUtils {
 
 	private CamelCaseUtils() {}
 
-	private static final char SEPARATOR = '_';
-
+	private static final String SEPARATOR = "_";
+	
 	/**
-	 * 驼峰转下划线
+	 * 驼峰转为指定分隔符字符串
+	 * @param separator
 	 * @param camel
 	 * @return
 	 */
-	public static String toUnderlineString(String camel) {
-		if (camel == null) {
+	public static String toSeparatorString(String separator, String camel) {
+		if (separator==null || camel == null) {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -33,7 +34,7 @@ public final class CamelCaseUtils {
 
 			if ((i >= 0) && Character.isUpperCase(c)) {
 				if (!upperCase || !nextUpperCase) {
-					if (i > 0) sb.append(SEPARATOR);
+					if (i > 0) sb.append(separator);
 				}
 				upperCase = true;
 			} else {
@@ -44,6 +45,15 @@ public final class CamelCaseUtils {
 		}
 
 		return sb.toString();
+	}
+
+	/**
+	 * 驼峰转下划线
+	 * @param camel
+	 * @return
+	 */
+	public static String toUnderlineString(String camel) {
+		return toSeparatorString(SEPARATOR, camel);
 	}
 
 	/**
